@@ -1,0 +1,11 @@
+# ID;# image path (relative to proj root)
+/test_collection/cluj_mihai_viteazul;./src/test/resources/melampohome/datasets/test_dataset/images/cluj_mihai_viteazul.jpg
+/test_collection/cluj_bastionul_croitorilor;./src/test/resources/melampohome/datasets/test_dataset/images/cluj_bastionul_croitorilor.jpg
+/test_collection/cluj_sf_mihail;./src/test/resources/melampohome/datasets/test_dataset/images/cluj_sf_mihail.jpg 
+/test_collection/vienna_gloriette;./src/test/resources/melampohome/datasets/test_dataset/images/vienna_gloriette.jpg
+/test_collection/vienna_opera;./src/test/resources/melampohome/datasets/test_dataset/images/vienna_opera.jpg
+/test_collection/cluj_avram_iancu;./src/test/resources/melampohome/datasets/test_dataset/images/cluj_avram_iancu.jpg
+/test_collection/cluj_matei_corvin;./src/test/resources/melampohome/datasets/test_dataset/images/cluj_matei_corvin.jpg
+/test_collection/vienna_art_history_museum;./src/test/resources/melampohome/datasets/test_dataset/images/vienna_art_history_museum.jpg
+/test_collection/vienna_national_library;./src/test/resources/melampohome/datasets/test_dataset/images/vienna_national_library.jpg
+/test_collection/vienna_schoenbrunn;./src/test/resources/melampohome/datasets/test_dataset/images/vienna_schoenbrunn.jpg
