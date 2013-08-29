@@ -114,7 +114,7 @@ String beanID = "similaritySearch";
                         <td valign="top">
                         	<div id="result_<%=i%>" style="padding: 5px;">
 
-<%@include file='ImageResult.jsp'%>
+<%@include file='ImageResult.jspf'%>
 </div> 
 
                         </td>
