@@ -68,6 +68,13 @@
 			<groupId>it.cnr.isti.melampo</groupId>
 			<artifactId>melampo-index-builder</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+			<classifier>tests</classifier>
+		</dependency>
+		<dependency>
+			<groupId>it.cnr.isti.melampo</groupId>
+			<artifactId>melampo-index-builder</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
