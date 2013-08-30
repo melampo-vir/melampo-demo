@@ -28,8 +28,11 @@
 			<img class="header"	src="images/cnr.logo.jpg" border="0" alt="">
 			<img class="header" src="images/ait.logo.jpg" border="0" alt="">
 			</div>
+			
 			<div align="center">
+			<!-- 
 			<a href="./dataset.html">Dataset description</a> 
+			 -->
 			<table><tr><td>
 			<%@include file='searchBar.jsp'%>
 			</td>
@@ -53,7 +56,7 @@
 						<div align="left"><a href="./Search?id=<%=id%>&features=<%=advOptions.getFeaturesAsString()%>&src=rnd"
 							title="search similar images">similar</a> &nbsp;
 							<div>
-							<a href="http://www.europeana.eu/portal/record<%=id%>.html" title="Go to Europeana's page" target="_blank"><img
+							<a href="<%=objectUrl%>" title="Vie image from original location" target="_blank"><img
 							src="<%=objectUrl%>" border="0" alt="" width="200"></a></div>
 							</div>
 						</td>
