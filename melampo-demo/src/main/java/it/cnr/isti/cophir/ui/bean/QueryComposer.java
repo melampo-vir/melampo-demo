@@ -1,8 +1,15 @@
 package it.cnr.isti.cophir.ui.bean;
 
+import it.cnr.isti.config.index.IndexConfiguration;
 import it.cnr.isti.cophir.ui.index.IndexSupport;
-import it.cnr.isti.cophir.ui.tools.Image2Features;
+import it.cnr.isti.exception.TechnicalRuntimeException;
+import it.cnr.isti.feature.extraction.FeatureExtractionException;
+import it.cnr.isti.feature.extraction.Image2Features;
+//import it.cnr.isti.cophir.ui.tools.Image2Features;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -19,7 +26,7 @@ import org.apache.log4j.Logger;
 
 public class QueryComposer {
 
-	private Image2Features mpeg7Handler = new Image2Features();
+	private Image2Features mpeg7Handler;
 
 	private volatile String mediaUri = null;
 	private String imageQueryURL = null;
@@ -28,7 +35,12 @@ public class QueryComposer {
 	protected String[] xqueryValues;
 	private static Logger log = Logger.getLogger(QueryComposer.class);
 
-	public QueryComposer() {
+	public QueryComposer(String dataset, IndexConfiguration config) {
+		try {
+			mpeg7Handler = new Image2Features(config.getIndexConfFolder(dataset));
+		} catch (Exception e) {
+			throw new TechnicalRuntimeException("Cannot instantiate the feature extractor", e);
+		} 
 	}
 
 	public void parseRequest(HttpServletRequest request) {
@@ -37,7 +49,11 @@ public class QueryComposer {
 		if (isMultipart) {
 			parseMultipartRequest(request);
 		} else {
-			parseStandardRequest(request);
+			try {
+				parseStandardRequest(request);
+			} catch (Exception e) {
+				throw new TechnicalRuntimeException("Cannot parse standard request", e);
+			}
 		}
 	}
 
@@ -67,13 +83,13 @@ public class QueryComposer {
 				if (item.isFormField()) {
 					String name = item.getFieldName();
 					if (name.equals("imgFile")) {
-							mpeg7 = mpeg7Handler.image2Features(item.getInputStream());
+							mpeg7 = mpeg7Handler.extractFeatures(item.getInputStream());
 					} else {
 					String value = item.getString();
 					if (name.equals("url")) {
 						url = value.trim();
 						log.debug("Query url: " + url);
-							mpeg7 = mpeg7Handler.imgURL2Features(url);
+							mpeg7 = mpeg7Handler.extractFeatures(new URL(url));
 					} else if (name.equals("id")) {
 						id = value;
 						mediaUri = id;
@@ -84,14 +100,15 @@ public class QueryComposer {
 				}
 
 				} else if (item.getSize() > 0) {
-						mpeg7 = mpeg7Handler.image2Features(item.getInputStream());
+						mpeg7 = mpeg7Handler.extractFeatures(item.getInputStream());
 				}
 			}
 
 			if (mpeg7 != null && !mpeg7.trim().equals("")) {
 				fields.add("Image");
 				values.add(mpeg7);
-				setImageQueryURL(mpeg7Handler.getQueryURL());
+				setImageQueryURL(url);
+				//setImageQueryURL(mpeg7Handler.getQueryURL());
 			} else if (id != null) {
 				fields.add("id");
 				values.add(id);
@@ -125,7 +142,7 @@ public class QueryComposer {
 		}
 	}
 
-	private void parseStandardRequest(HttpServletRequest request) {
+	private void parseStandardRequest(HttpServletRequest request) throws MalformedURLException, FeatureExtractionException {
 		String url = null;
 		String mpeg7 = null;
 		String id = null;
@@ -154,18 +171,21 @@ public class QueryComposer {
 		}
 
 		if (url != null && !url.trim().equals("")) {
-			mpeg7 = mpeg7Handler.imgURL2Features(url);
+			mpeg7 = mpeg7Handler.extractFeatures(new URL(url));
 		}
 
 		if (mpeg7 != null && !mpeg7.trim().equals("")) {
 			fields.add("Image");
 			values.add(mpeg7);
-			setImageQueryURL(mpeg7Handler.getQueryURL());
+			setImageQueryURL(url);
+			//setImageQueryURL(mpeg7Handler.getQueryURL());
 		} else if (id != null) {
 			fields.add("id");
 			values.add(id);
 			//TODO:UPDATE
-			setImageQueryURL(IndexSupport.getThumbnailUrl(id));
+			RandomImages randomImages = (RandomImages) request.getSession().getAttribute("randomImages");
+			setImageQueryURL(randomImages.getThumbnailUrl(id));
+			//setImageQueryURL(IndexSupport.getThumbnailUrl(id));
 		}
 		
 		int i = 0;

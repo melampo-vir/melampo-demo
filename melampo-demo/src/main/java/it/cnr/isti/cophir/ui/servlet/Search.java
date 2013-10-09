@@ -1,5 +1,6 @@
 package it.cnr.isti.cophir.ui.servlet;
 
+import it.cnr.isti.config.index.IndexConfiguration;
 import it.cnr.isti.cophir.ui.bean.LoggingInfo;
 import it.cnr.isti.cophir.ui.bean.QueryComposer;
 import it.cnr.isti.cophir.ui.bean.SearchBean;
@@ -56,78 +57,82 @@ public class Search extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		
-		LoggingInfo loggingInfo = (LoggingInfo) session.getAttribute("imgLoggingInfo");
-		
-			loggingInfo.setIpAddress(request.getRemoteAddr());
 
-			loggingInfo.setTimestamp(System.currentTimeMillis());
+		LoggingInfo loggingInfo = (LoggingInfo) session
+				.getAttribute("imgLoggingInfo");
 
-			String src = request.getParameter("src");
-			
-			boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-			if (src == null || src.trim().equals("")) {
-				if (isMultipart) {
-					src = "form";
-				}
-				else {
-					src = "unknown";
-				}
+		loggingInfo.setIpAddress(request.getRemoteAddr());
+
+		loggingInfo.setTimestamp(System.currentTimeMillis());
+
+		String src = request.getParameter("src");
+
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		if (src == null || src.trim().equals("")) {
+			if (isMultipart) {
+				src = "form";
+			} else {
+				src = "unknown";
 			}
-			loggingInfo.setSrc(src.trim());
-		
-		//---------------------
-		
-			Index_IF mmdls = (Index_IF) session.getAttribute("imageQA");
+		}
+		loggingInfo.setSrc(src.trim());
 
-			SearchBean imageSearchBean = (SearchBean) session
-					.getAttribute("imageSearchBean");
-			if (imageSearchBean == null) {
-				imageSearchBean = new SearchBean(mmdls);
-				session.setAttribute("imageSearchBean", imageSearchBean);
-			}
+		// ---------------------
+
+		Index_IF mmdls = (Index_IF) session.getAttribute("imageQA");
+
+		SearchBean imageSearchBean = (SearchBean) session
+				.getAttribute("imageSearchBean");
+		if (imageSearchBean == null) {
+			imageSearchBean = new SearchBean(mmdls);
+			session.setAttribute("imageSearchBean", imageSearchBean);
+		}
+
+		QueryComposer parameters = (QueryComposer) session
+				.getAttribute("parameters");
+
+		if (parameters == null) {
 			
-			QueryComposer parameters = (QueryComposer) session
-			.getAttribute("parameters");
-			
-			if (parameters == null) {
-				parameters = new QueryComposer();
-				session.setAttribute("parameters", parameters);
-	}
+			IndexConfiguration config = (IndexConfiguration) getServletContext()
+					.getAttribute("configuration");
 
-			int numberOfPage = 0;
+			parameters = new QueryComposer(config.getDefaultDataset(), config);
+			session.setAttribute("parameters", parameters);
+		}
 
-			if (request.getParameter("page") != null) {
-				String page = request.getParameter("page").trim();
-				numberOfPage = Integer.parseInt(page);
-			} 
-			else if (request.getParameter("xmlQuery") != null) {
-				numberOfPage = 0;
-				String xmlQuery = request.getParameter("xmlQuery");
-				imageSearchBean.search(xmlQuery);
-			} 
-			
-			String	id = request.getParameter("id");
-			
-			if ((isMultipart || (id != null && !id.equals(parameters.getMediaUri()))) || request.getParameter("page") == null) {
-				//QueryComposer parameters = new QueryComposer();
-				parameters.parseRequest(request);
-				loggingInfo.setQueryID(parameters.getImageQueryURL());
-				imageSearchBean.search(parameters.getXQueryFields(), parameters
-						.getXQueryValues(), parameters.getMediaUri(), parameters
-						.getImageQueryURL());
+		int numberOfPage = 0;
 
-			}
+		if (request.getParameter("page") != null) {
+			String page = request.getParameter("page").trim();
+			numberOfPage = Integer.parseInt(page);
+		} else if (request.getParameter("xmlQuery") != null) {
+			numberOfPage = 0;
+			String xmlQuery = request.getParameter("xmlQuery");
+			imageSearchBean.search(xmlQuery);
+		}
 
-			imageSearchBean.setIndex(numberOfPage);
+		String id = request.getParameter("id");
 
-			// writes logs
-				QueryLog.log(loggingInfo);
-				loggingInfo.resetSearchInfo();
+		if ((isMultipart || (id != null && !id.equals(parameters.getMediaUri())))
+				|| request.getParameter("page") == null) {
+			// QueryComposer parameters = new QueryComposer();
+			parameters.parseRequest(request);
+			loggingInfo.setQueryID(parameters.getImageQueryURL());
+			imageSearchBean.search(parameters.getXQueryFields(),
+					parameters.getXQueryValues(), parameters.getMediaUri(),
+					parameters.getImageQueryURL());
 
-			request.getRequestDispatcher("./SearchResults.jsp").forward(
-					request, response);
-		
+		}
+
+		imageSearchBean.setIndex(numberOfPage);
+
+		// writes logs
+		QueryLog.log(loggingInfo);
+		loggingInfo.resetSearchInfo();
+
+		request.getRequestDispatcher("./SearchResults.jsp").forward(request,
+				response);
+
 	}
 
 	/**

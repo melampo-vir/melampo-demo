@@ -11,6 +11,7 @@ public class IndexSupport {
 
 	static {
 		try {
+			//TODO: change this
 			thumbServer = UITools.getProperty(
 					Parameters.getUIConfigFile().getPath(), "thumbServer")
 					.trim();
