@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import it.cnr.isti.config.index.IndexConfiguration;
+import it.cnr.isti.config.index.IndexConfigurationImpl;
 import it.cnr.isti.cophir.ui.bean.LoggingInfo;
 import it.cnr.isti.cophir.ui.bean.Parameters;
 import it.cnr.isti.melampo.index.searching.MelampoSearcherHub;
@@ -26,7 +28,9 @@ public class MelampoIndex implements Index_IF {
 			
 			//if (m_lucignoloSearcher == null){
 			m_lucignoloSearcher = new MelampoSearcherHub();
-			m_lucignoloSearcher.openIndices(new File(Parameters.UI_HOME));
+			IndexConfiguration indexConfiguration = new IndexConfigurationImpl();
+			m_lucignoloSearcher.openIndices(indexConfiguration.getIndexConfFolder(null).getAbsoluteFile());
+			//m_lucignoloSearcher.openIndices(new File(Parameters.UI_HOME));
 			//}
 			//System.out.println("using index "+index);
 		} catch (VIRException e) {

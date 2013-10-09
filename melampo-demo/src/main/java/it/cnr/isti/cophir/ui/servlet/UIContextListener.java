@@ -29,21 +29,22 @@ public class UIContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
     	 System.out.println("Servlet Context is initialized....");
     	 ServletContext context = arg0.getServletContext();
-    	 String uiHome = context.getInitParameter("UI_HOME");
-    	 Parameters.setUIHome(uiHome);
+//    	 String uiHome = context.getInitParameter("UI_HOME");
+//    	 Parameters.setUIHome(uiHome);
     	 
- 		try {
-			SearchBean.setResultsForPage(Integer.parseInt(UITools.getProperty(Parameters.getUIConfigFile().getPath(),
-			"resultsForPage").trim()));
-	 		SearchBean.setResultsForRow(Integer.parseInt(UITools.getProperty(Parameters.getUIConfigFile().getPath(),
-			"resultsForRow").trim()));
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+// 		try {
+ 			//TODO: eliminate following code, possibly by moving them to configurations or input elements
+//			SearchBean.setResultsForPage(Integer.parseInt(UITools.getProperty(Parameters.getUIConfigFile().getPath(),
+//			"resultsForPage").trim()));
+//	 		SearchBean.setResultsForRow(Integer.parseInt(UITools.getProperty(Parameters.getUIConfigFile().getPath(),
+//			"resultsForRow").trim()));
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
     	
 		//MobileCostants.setRootPath("http://aimar.isti.cnr.it:8080/visitoWebClassifier");

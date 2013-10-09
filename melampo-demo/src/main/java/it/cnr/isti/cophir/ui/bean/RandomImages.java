@@ -23,7 +23,6 @@ public class RandomImages {
 //	}
 
 	private int numberOfImages = -1;
-	private static final String FILENAME_LIST = "filenames.properties";
 	// private static final String PHOTO_PREFIX = "photo";
 	private static final String ID_PREFIX = "id";
 
@@ -35,9 +34,9 @@ public class RandomImages {
 	Properties filenamesListProps = null;
 	FileInputStream fIS = null;
 
-	public synchronized void openProps() throws IOException {
-		openProps(new File (FILENAME_LIST));
-	}
+//	public synchronized void openProps() throws IOException {
+//		openProps(new File (FILENAME_LIST));
+//	}
 
 	
 	public synchronized void openProps(File filename) throws IOException {

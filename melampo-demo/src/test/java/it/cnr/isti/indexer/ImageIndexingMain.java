@@ -1,10 +1,11 @@
 package it.cnr.isti.indexer;
 
-import it.cnr.isti.feature.extraction.FeatureExtractionException;
+import it.cnr.isti.config.index.ImageDemoConfigurationImpl;
+import it.cnr.isti.exception.ImageIndexingException;
+import it.cnr.isti.exception.TechnicalRuntimeException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -13,15 +14,8 @@ import java.util.Map;
 public class ImageIndexingMain {
 
 	private ImageIndexing test;
-	File melampoHome = null;
 	IndexHelper helper = new IndexHelper(); 
 	
-	public File getMelampoHome() throws IOException {
-		if (melampoHome == null)
-			melampoHome = (new File("../../imagedemo")).getCanonicalFile();
-		return melampoHome;
-	}
-
 	public static void main(String args[]) {
 		ImageIndexingMain test = new ImageIndexingMain();
 		try {
@@ -60,8 +54,7 @@ public class ImageIndexingMain {
 
 	public void openIndex() throws IOException {
 
-		File confDir = new File(getMelampoHome() + "/conf");
-		test = new ImageIndexing(confDir);
+		test = new ImageIndexing(null, new ImageDemoConfigurationImpl());
 
 		try {
 			test.openIndex();
@@ -71,20 +64,14 @@ public class ImageIndexingMain {
 		}
 	}
 
-	public void insertImageObjects() throws IOException {
+	public void insertImageObject() throws IOException {
 		try {
 			InputStream imageObj = new FileInputStream(new File(
-					getMelampoHome() + "/index/testImage.jpg"));
+					"../src/test/resources/indexhome/datasets/testImage.jpg"));
 			test.insertImage("img1", imageObj);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ImageIndexingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FeatureExtractionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			throw new TechnicalRuntimeException("cannot index test image", e);
+		} 
 	}
 
 	public void closeIndex() {

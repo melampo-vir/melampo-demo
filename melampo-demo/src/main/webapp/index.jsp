@@ -2,6 +2,9 @@
     class="it.cnr.isti.cophir.ui.bean.Parameters" />
 <jsp:useBean id="randomImages" scope="session"
 	class="it.cnr.isti.cophir.ui.bean.RandomImages" />
+<jsp:useBean id="configuration" scope="application"
+	class="it.cnr.isti.config.index.ImageDemoConfigurationImpl" />
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 
@@ -44,7 +47,9 @@
         <div id="content" align="center">
         	<table>
         		<%
-        			randomImages.openProps(advOptions.getDatasetFile());
+        			//GET FILES FOR THE DEFAULT DATASET
+        			//TODO: move the business logic to java class
+        			randomImages.openProps(configuration.getDatasetUrlsFile(null));
 		        	for (int i = 0; i < 12; i++) {
 		        		if (i % 4 == 0) 
 		        		out.print("<tr>");%>
