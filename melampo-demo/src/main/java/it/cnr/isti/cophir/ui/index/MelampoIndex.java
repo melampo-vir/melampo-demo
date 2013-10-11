@@ -1,15 +1,14 @@
 package it.cnr.isti.cophir.ui.index;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import it.cnr.isti.config.index.ImageDemoConfigurationImpl;
 import it.cnr.isti.config.index.IndexConfiguration;
-import it.cnr.isti.config.index.IndexConfigurationImpl;
 import it.cnr.isti.cophir.ui.bean.LoggingInfo;
 import it.cnr.isti.cophir.ui.bean.Parameters;
 import it.cnr.isti.melampo.index.searching.MelampoSearcherHub;
 import it.cnr.isti.melampo.vir.exceptions.VIRException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MelampoIndex implements Index_IF {
 	
@@ -28,7 +27,7 @@ public class MelampoIndex implements Index_IF {
 			
 			//if (m_lucignoloSearcher == null){
 			m_lucignoloSearcher = new MelampoSearcherHub();
-			IndexConfiguration indexConfiguration = new IndexConfigurationImpl();
+			IndexConfiguration indexConfiguration = getIndexConfiguration();
 			m_lucignoloSearcher.openIndices(indexConfiguration.getIndexConfFolder(null).getAbsoluteFile());
 			//m_lucignoloSearcher.openIndices(new File(Parameters.UI_HOME));
 			//}
@@ -38,6 +37,12 @@ public class MelampoIndex implements Index_IF {
 			e.printStackTrace();
 		}
 		
+	}
+
+
+	protected IndexConfiguration getIndexConfiguration() {
+		IndexConfiguration indexConfiguration = new ImageDemoConfigurationImpl();
+		return indexConfiguration;
 	}
 
 	
