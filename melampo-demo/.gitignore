@@ -3,3 +3,4 @@
 .classpath
 .project
 java/workspace_eu_creative_ir
+**/LuceneIndex
