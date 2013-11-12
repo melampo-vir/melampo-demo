@@ -1,9 +1,8 @@
 package it.cnr.isti.cophir.ui.servlet;
 
-import it.cnr.isti.cophir.ui.bean.Parameters;
+import it.cnr.isti.config.index.ImageDemoConfiguration;
 import it.cnr.isti.cophir.ui.bean.RandomImages;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -46,9 +45,10 @@ public class Index extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 				
-		String rootPath = getServletContext().getRealPath("/");
+		//String rootPath = getServletContext().getRealPath("/");
 		RandomImages randomImages = (RandomImages) session.getAttribute("randomImages");
-		Parameters advOptions = (Parameters) session.getAttribute("advOptions");
+		//Parameters advOptions = (Parameters) session.getAttribute("advOptions");
+		ImageDemoConfiguration configuration = (ImageDemoConfiguration) session.getAttribute("configuration");
 		
 		
 		String advUI = request.getParameter("advUI");
@@ -63,7 +63,10 @@ public class Index extends HttpServlet {
 		
 		if (randomImages == null) {
 			randomImages = new RandomImages();
-			randomImages.openProps(advOptions.getDatasetFile());
+			
+			//TODO: use index configuration instead index helper
+			//randomImages.openProps(advOptions.getDatasetFile());
+			randomImages.openProps(configuration.getDatasetUrlsFile(null));
 			session.setAttribute("randomImages", randomImages);
 		}
 		
