@@ -1,5 +1,6 @@
 package it.cnr.isti.cophir.ui.servlet;
 
+import it.cnr.isti.config.index.ImageDemoConfigurationImpl;
 import it.cnr.isti.config.index.IndexConfiguration;
 import it.cnr.isti.cophir.ui.bean.LoggingInfo;
 import it.cnr.isti.cophir.ui.bean.QueryComposer;
@@ -92,10 +93,15 @@ public class Search extends HttpServlet {
 				.getAttribute("parameters");
 
 		if (parameters == null) {
-			
 			IndexConfiguration config = (IndexConfiguration) getServletContext()
 					.getAttribute("configuration");
 
+			if(config == null){
+				config = new ImageDemoConfigurationImpl();
+				session.setAttribute("configuration", config);
+			}
+				
+				
 			parameters = new QueryComposer(config.getDefaultDataset(), config);
 			session.setAttribute("parameters", parameters);
 		}

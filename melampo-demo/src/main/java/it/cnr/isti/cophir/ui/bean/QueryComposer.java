@@ -1,5 +1,6 @@
 package it.cnr.isti.cophir.ui.bean;
 
+import it.cnr.isti.config.index.ImageDemoConfiguration;
 import it.cnr.isti.config.index.IndexConfiguration;
 import it.cnr.isti.cophir.ui.index.IndexSupport;
 import it.cnr.isti.exception.TechnicalRuntimeException;
@@ -142,7 +143,7 @@ public class QueryComposer {
 		}
 	}
 
-	private void parseStandardRequest(HttpServletRequest request) throws MalformedURLException, FeatureExtractionException {
+	private void parseStandardRequest(HttpServletRequest request) throws FeatureExtractionException, IOException {
 		String url = null;
 		String mpeg7 = null;
 		String id = null;
@@ -182,8 +183,18 @@ public class QueryComposer {
 		} else if (id != null) {
 			fields.add("id");
 			values.add(id);
-			//TODO:UPDATE
-			RandomImages randomImages = (RandomImages) request.getSession().getAttribute("randomImages");
+			
+			HttpSession session = request.getSession();
+			ImageDemoConfiguration configuration = (ImageDemoConfiguration) session.getAttribute("configuration");
+			
+			//TODO: Same as in Index.processRequest, consider refactoring
+			RandomImages randomImages = (RandomImages) session.getAttribute("randomImages");
+			if(randomImages == null){
+				randomImages = new RandomImages();
+				randomImages.openProps(configuration.getDatasetUrlsFile(null));
+				session.setAttribute("randomImages", randomImages);
+			}
+				
 			setImageQueryURL(randomImages.getThumbnailUrl(id));
 			//setImageQueryURL(IndexSupport.getThumbnailUrl(id));
 		}
