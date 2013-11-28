@@ -1,6 +1,7 @@
 package it.cnr.isti.cophir.ui.servlet;
 
 import it.cnr.isti.config.index.ImageDemoConfiguration;
+import it.cnr.isti.config.index.ImageDemoConfigurationImpl;
 import it.cnr.isti.cophir.ui.bean.RandomImages;
 
 import java.io.IOException;
@@ -49,7 +50,10 @@ public class Index extends HttpServlet {
 		RandomImages randomImages = (RandomImages) session.getAttribute("randomImages");
 		//Parameters advOptions = (Parameters) session.getAttribute("advOptions");
 		ImageDemoConfiguration configuration = (ImageDemoConfiguration) session.getAttribute("configuration");
-		
+		if(configuration == null){
+			configuration = new ImageDemoConfigurationImpl();
+			session.setAttribute("configuration", configuration);
+		}
 		
 		String advUI = request.getParameter("advUI");
 		if (advUI != null) {
