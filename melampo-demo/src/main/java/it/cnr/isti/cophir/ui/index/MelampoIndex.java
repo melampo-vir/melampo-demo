@@ -33,8 +33,7 @@ public class MelampoIndex implements Index_IF {
 			//}
 			//System.out.println("using index "+index);
 		} catch (VIRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Cannot initialize MelampoIndex!", e);
 		}
 		
 	}
@@ -54,13 +53,11 @@ public class MelampoIndex implements Index_IF {
 
 	@Override
 	public String[][] getResults(int startFrom, int numElements) {
-		// TODO Auto-generated method stub
 		String[][] retval = null;
 		try {
 			retval = m_lucignoloSearcher.getResults(startFrom, numElements);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new  RuntimeException("cannot read search results!", e);
 		}
 		return retval;
 	}
@@ -79,7 +76,6 @@ public class MelampoIndex implements Index_IF {
 
 	@Override
 	public String search(String[] values, String[] fields) {
-		// TODO Auto-generated method stub
 		long start = System.currentTimeMillis();
 		
 		ArrayList<String> features = settings.getFeatures();
@@ -129,8 +125,7 @@ public class MelampoIndex implements Index_IF {
 			try {
 				m_lucignoloSearcher.query(vals, flds, isQueryID);
 			} catch (VIRException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RuntimeException("Cannot build search query!", e);
 			}
 		
 		m_time = System.currentTimeMillis()-start;

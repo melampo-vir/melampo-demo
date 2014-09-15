@@ -2,6 +2,8 @@ package it.cnr.isti.cophir.ui.bean;
 
 import it.cnr.isti.config.index.ImageDemoConfiguration;
 import it.cnr.isti.config.index.IndexConfiguration;
+import it.cnr.isti.cophir.ui.bean.image.ImageDispatcher;
+import it.cnr.isti.cophir.ui.bean.image.RandomImages;
 import it.cnr.isti.cophir.ui.index.IndexSupport;
 import it.cnr.isti.exception.TechnicalRuntimeException;
 import it.cnr.isti.feature.extraction.FeatureExtractionException;
@@ -194,8 +196,17 @@ public class QueryComposer {
 				randomImages.openProps(configuration.getDatasetUrlsFile(null));
 				session.setAttribute("randomImages", randomImages);
 			}
+			
+			ImageDispatcher imageDispatcher = (ImageDispatcher) session.getAttribute("imageDispatcher");
+			if(imageDispatcher == null){
+				imageDispatcher = new ImageDispatcher();
+				imageDispatcher.setConfigurationIfNull(configuration);
+				imageDispatcher.setRandomImageGeneratorIfNull(randomImages);
 				
-			setImageQueryURL(randomImages.getThumbnailUrl(id));
+				session.setAttribute("imageDispatcher", imageDispatcher);
+			}
+				
+			setImageQueryURL(imageDispatcher.getThumbnailUrl(id, "./"));
 			//setImageQueryURL(IndexSupport.getThumbnailUrl(id));
 		}
 		

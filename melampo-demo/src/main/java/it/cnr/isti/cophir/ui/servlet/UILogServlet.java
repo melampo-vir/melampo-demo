@@ -14,8 +14,17 @@ public class UILogServlet extends HttpServlet {
 
 	public void init() throws ServletException {
 		// Get Fully Qualified Path to Properties File
+		//use context specifig configurations
 		String config = getServletContext().getRealPath("/")
-				+ getInitParameter("setup");
+				+  "/WEB-INF" + getServletContext().getContextPath() + "/" + getInitParameter("setup");
+		
+		
+		File configFile = new File(config);
+		//if not use default configurations
+		if(!configFile.exists())
+			config = getServletContext().getRealPath("/")
+			+  "/WEB-INF/" + getInitParameter("setup");
+		
 		System.out.println("LoggingServlet Initialized using file : " + config);
 		// Initialize Properties for All Servlets
 		PropertyConfigurator.configure(config);

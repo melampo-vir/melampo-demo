@@ -1,0 +1,11 @@
+#path of the ir-image index folder (stand-alone index version)
+image.index.home = ./src/test/resources/indexhome
+
+#the image controller to be used
+#it.cnr.isti.cophir.ui.bean.image.RemoteImageController - serving images from remote (http) servers
+#it.cnr.isti.cophir.ui.bean.image.LocalImageController - serving images from local file system
+#if not set the URLS stored in the index will be used
+#image.controller.class = it.cnr.isti.cophir.ui.bean.image.RemoteImageController
+
+# The name of the default dataset, see IndexConfiguration
+dataset.default = test

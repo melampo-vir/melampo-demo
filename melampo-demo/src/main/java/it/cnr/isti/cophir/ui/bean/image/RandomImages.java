@@ -1,4 +1,4 @@
-package it.cnr.isti.cophir.ui.bean;
+package it.cnr.isti.cophir.ui.bean.image;
 
 import it.cnr.isti.indexer.IndexHelper;
 
@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class RandomImages {
 
-	private static Random random = new Random();
+	private Random random = new Random();
 //	private String rootPath = "";
 
 	public RandomImages() {

@@ -3,7 +3,16 @@
 <jsp:useBean id="advOptions" scope="session"
     class="it.cnr.isti.cophir.ui.bean.Parameters" />
 <jsp:useBean id="randomImages" scope="session"
-	class="it.cnr.isti.cophir.ui.bean.RandomImages" />
+	class="it.cnr.isti.cophir.ui.bean.image.RandomImages" />
+<jsp:useBean id="imageDispatcher" scope="session"
+	class="it.cnr.isti.cophir.ui.bean.image.ImageDispatcher" />
+<%
+	//Initialize image dispatcher
+//GET FILES FOR THE DEFAULT DATASET
+//TODO: move the business logic to java class
+//randomImages.openProps(configuration.getDatasetUrlsFile(null));
+imageDispatcher.setRandomImageGeneratorIfNull(randomImages);
+%>
 	
 <html>
     <head>

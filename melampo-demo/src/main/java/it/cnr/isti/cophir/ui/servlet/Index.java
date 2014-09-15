@@ -2,7 +2,8 @@ package it.cnr.isti.cophir.ui.servlet;
 
 import it.cnr.isti.config.index.ImageDemoConfiguration;
 import it.cnr.isti.config.index.ImageDemoConfigurationImpl;
-import it.cnr.isti.cophir.ui.bean.RandomImages;
+import it.cnr.isti.cophir.ui.bean.image.ImageDispatcher;
+import it.cnr.isti.cophir.ui.bean.image.RandomImages;
 
 import java.io.IOException;
 
@@ -46,8 +47,6 @@ public class Index extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 				
-		//String rootPath = getServletContext().getRealPath("/");
-		RandomImages randomImages = (RandomImages) session.getAttribute("randomImages");
 		//Parameters advOptions = (Parameters) session.getAttribute("advOptions");
 		ImageDemoConfiguration configuration = (ImageDemoConfiguration) session.getAttribute("configuration");
 		if(configuration == null){
@@ -65,6 +64,9 @@ public class Index extends HttpServlet {
 			}
 		}
 		
+		//String rootPath = getServletContext().getRealPath("/");
+		RandomImages randomImages = (RandomImages) session.getAttribute("randomImages");
+				
 		if (randomImages == null) {
 			randomImages = new RandomImages();
 			
@@ -73,6 +75,16 @@ public class Index extends HttpServlet {
 			randomImages.openProps(configuration.getDatasetUrlsFile(null));
 			session.setAttribute("randomImages", randomImages);
 		}
+		
+//		ImageDispatcher imageDispatcher = (ImageDispatcher) session.getAttribute("imageDispatcher");
+//		if(imageDispatcher == null){
+//			imageDispatcher = new ImageDispatcher();
+//			imageDispatcher.setConfigurationIfNull(configuration);
+//			imageDispatcher.setRandomImageGeneratorIfNull(randomImages);
+//			
+//			session.setAttribute("imageDispatcher", imageDispatcher);
+//		}
+//		
 		
 		if (request.getParameter("selected") != null) {
 			if (request.getParameter("selected").equals("false")) {
