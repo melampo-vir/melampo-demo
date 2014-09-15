@@ -14,9 +14,17 @@
 	<dependencies>
 		<dependency>
 			<groupId>it.cnr.isti.melampo</groupId>
+			<artifactId>melampo-demo-servlets</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>it.cnr.isti.melampo</groupId>
 			<artifactId>melampo-index</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		 
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -87,7 +95,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+		-->
 	
 	</dependencies>
 	
